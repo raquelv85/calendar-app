@@ -54,10 +54,24 @@ html, body {
   padding: 10px;
 }
 
+/* Datepicker */
+
 .react-datetime-focus input:focus {
   outline: none ;
 }
 
 .react-datetime-picker__wrapper {
   border: 0px solid grey !important;
+}
+
+/* FABS */
+
+.fab {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;;
+  bottom: 25px;
+  font-size: 25px;
+  position: fixed;
+  right: 25px;
 }

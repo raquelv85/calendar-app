@@ -1,17 +1,20 @@
-import React, {useState} from "react";
-import {Calendar, momentLocalizer} from "react-big-calendar";
-import { useDispatch } from 'react-redux'
+import React, { useState } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import { useDispatch } from "react-redux";
 import moment from "moment";
-import "moment/locale/es"
+import "moment/locale/es";
 import { NavBar } from "../ui/NavBar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {messages} from "../../helpers/calendar-messages-es";
-import {CalendarEvent} from "./CalendarEvent";
-import {CalendarModal} from "../calendar/CalendarModal";
+import { messages } from "../../helpers/calendar-messages-es";
+
+import { CalendarEvent } from "./CalendarEvent";
+import { CalendarModal } from "../calendar/CalendarModal";
+import { AddNewFab } from "../ui/AddNewFab";
+
 import { uiOpenModal } from "../../actions/ui";
 import { eventSetActive } from "../../actions/events";
 
-moment.locale('es')
+moment.locale("es");
 
 const localizer = momentLocalizer(moment);
 
@@ -19,48 +22,49 @@ const events = [
   {
     title: "Cumpleaños jefe",
     start: moment().toDate(),
-    end: moment().add( 2,'hours').toDate(),
+    end: moment().add(2, "hours").toDate(),
     bgColor: "#fafafa",
     user: {
       _id: "1234",
-      name: "Raquel"
-    }
-  }
-]
+      name: "Raquel",
+    },
+  },
+];
 
 export const CalendarScreen = () => {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-
-  const [lastView, setLastView] = useState(localStorage.getItem("lastView") || "month")
+  const [lastView, setLastView] = useState(
+    localStorage.getItem("lastView") || "month"
+  );
 
   const onDoubleClick = (e) => {
-    dispatch( uiOpenModal())
-  }
+    dispatch(uiOpenModal());
+  };
 
   const onSelectEvent = (e) => {
-    dispatch( eventSetActive(e))
-  }
+    dispatch(eventSetActive(e));
+    dispatch(uiOpenModal());
+  };
 
   const onViewChange = (e) => {
-    setLastView(e)
-    localStorage.setItem("lastView",e)
-  }
+    setLastView(e);
+    localStorage.setItem("lastView", e);
+  };
 
-  const eventStyleGetter = (event,start,end,isSelected) => {
+  const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
       backgroundColor: "#367CF7",
       borderRadius: "0px",
       opacity: 0.8,
       display: "block",
       color: "white",
-     
-    }
+    };
 
     return {
-      style
-    }
-  }
+      style,
+    };
+  };
 
   return (
     <div className="calendar-screen">
@@ -75,9 +79,10 @@ export const CalendarScreen = () => {
         onSelectEvent={onSelectEvent}
         onView={onViewChange}
         eventPropGetter={eventStyleGetter}
-        components={{event: CalendarEvent}}
+        components={{ event: CalendarEvent }}
         view={lastView}
       />
+      <AddNewFab action={() => dispatch(uiOpenModal())}/>
       <CalendarModal />
     </div>
   );
