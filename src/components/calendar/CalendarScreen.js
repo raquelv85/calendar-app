@@ -9,6 +9,7 @@ import {messages} from "../../helpers/calendar-messages-es";
 import {CalendarEvent} from "./CalendarEvent";
 import {CalendarModal} from "../calendar/CalendarModal";
 import { uiOpenModal } from "../../actions/ui";
+import { eventSetActive } from "../../actions/events";
 
 moment.locale('es')
 
@@ -38,7 +39,7 @@ export const CalendarScreen = () => {
   }
 
   const onSelectEvent = (e) => {
-    console.log(e)
+    dispatch( eventSetActive(e))
   }
 
   const onViewChange = (e) => {
