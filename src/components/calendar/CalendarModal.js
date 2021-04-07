@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import Modal from "react-modal";
 import DateTimePicker from "react-datetime-picker";
 import moment from "moment";
 import Swal from "sweetalert2";
-import { uiCloseModal } from "../../actions/ui"
-import { eventAddNew, eventClearActiveEvent } from "../../actions/events"
+import { uiCloseModal } from "../../actions/ui";
+import {
+  eventAddNew,
+  eventClearActiveEvent,
+  eventUpdated,
+} from "../../actions/events";
 
 const customStyles = {
   content: {
@@ -24,86 +28,96 @@ const now = moment().minutes(0).seconds(0).add(1, "hours");
 const nowPlus1 = now.clone().add(1, "hours");
 
 const initEvent = {
-    title: "",
-    notes: "",
-    start: now.toDate(),
-    end: nowPlus1.toDate()
-}
+  title: "",
+  notes: "",
+  start: now.toDate(),
+  end: nowPlus1.toDate(),
+};
 
 export const CalendarModal = () => {
-  const modalOpen = useSelector( state => state.ui.modalOpen);
-  const {activeEvent} = useSelector( state => state.calendar);
-  const dispatch = useDispatch()
+  const modalOpen = useSelector((state) => state.ui.modalOpen);
+  const { activeEvent } = useSelector((state) => state.calendar);
+  const dispatch = useDispatch();
 
   const [dateStart, setDateStart] = useState(now.toDate());
   const [dateEnd, setDateEnd] = useState(nowPlus1.toDate());
   const [titleValid, setTitleValid] = useState(true);
-  const [formValues, setFormValues] = useState(initEvent)
+  const [formValues, setFormValues] = useState(initEvent);
 
-  const {notes,title, start, end} = formValues;
+  const { notes, title, start, end } = formValues;
 
   useEffect(() => {
-    if(activeEvent){
-      setFormValues(activeEvent)
+    if (activeEvent) {
+      setFormValues(activeEvent);
     }
   }, [activeEvent, setFormValues]);
 
-  const handleInputChange = ({target}) => {
+  const handleInputChange = ({ target }) => {
     setFormValues({
       ...formValues,
-      [target.name] : target.value
-    })
-  }
+      [target.name]: target.value,
+    });
+  };
 
   const closeModal = () => {
-    setFormValues(initEvent)
-    dispatch( uiCloseModal() )
-    dispatch( eventClearActiveEvent() )
+    setFormValues(initEvent);
+    dispatch(uiCloseModal());
+    dispatch(eventClearActiveEvent());
   };
 
   const handleStartDateChange = (e) => {
     setDateStart(e);
     setFormValues({
       ...formValues,
-      start : e
-    })
+      start: e,
+    });
   };
 
   const handleEndDateChange = (e) => {
     setDateEnd(e);
     setFormValues({
       ...formValues,
-      end : e
-    })
+      end: e,
+    });
   };
 
   const handleSubmitForm = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const momentStart = moment(start)
-    const momentEnd  = moment(end)
-    
-    if(momentStart.isSameOrAfter(momentEnd)){
-      Swal.fire('Error','La fecha fin debe ser mayor a la fecha de inicio',"error")
-      return
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
+
+    if (momentStart.isSameOrAfter(momentEnd)) {
+      Swal.fire(
+        "Error",
+        "La fecha fin debe ser mayor a la fecha de inicio",
+        "error"
+      );
+      return;
     }
 
-    if(title.trim().length < 2){
-      return setTitleValid(false)
+    if (title.trim().length < 2) {
+      return setTitleValid(false);
     }
 
-    dispatch( eventAddNew({
-      ...formValues,
-      id: new Date().getTime(),
-      user: {
-        _id: "1234",
-        name: "Raquel"
-      }
-    }));
+    if (activeEvent) {
+      dispatch(eventUpdated(formValues));
+    } else {
+      dispatch(
+        eventAddNew({
+          ...formValues,
+          id: new Date().getTime(),
+          user: {
+            _id: "1234",
+            name: "Raquel",
+          },
+        })
+      );
+    }
 
-    setTitleValid(true)
+    setTitleValid(true);
     closeModal();
-  }
+  };
 
   return (
     <Modal
@@ -142,7 +156,7 @@ export const CalendarModal = () => {
           <label>Titulo y notas</label>
           <input
             type="text"
-            className={`form-control ${!titleValid && 'is-invalid'}`}
+            className={`form-control ${!titleValid && "is-invalid"}`}
             placeholder="Título del evento"
             name="title"
             autoComplete="off"
