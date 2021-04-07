@@ -10,9 +10,10 @@ import { messages } from "../../helpers/calendar-messages-es";
 import { CalendarEvent } from "./CalendarEvent";
 import { CalendarModal } from "../calendar/CalendarModal";
 import { AddNewFab } from "../ui/AddNewFab";
+import { DeleteEventFab } from "../ui/DeleteEventFab";
 
 import { uiOpenModal } from "../../actions/ui";
-import { eventSetActive } from "../../actions/events";
+import { eventSetActive, eventDeleted, eventClearActiveEvent } from "../../actions/events";
 
 moment.locale("es");
 
@@ -21,7 +22,7 @@ const localizer = momentLocalizer(moment);
 
 export const CalendarScreen = () => {
   const dispatch = useDispatch();
-  const events  = useSelector( state => state.calendar.events)
+  const {events, activeEvent}  = useSelector( state => state.calendar);
 
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "month"
@@ -54,6 +55,10 @@ export const CalendarScreen = () => {
     };
   };
 
+  const onSelectSlot = (e) => {
+    dispatch(eventClearActiveEvent())
+  }
+
 
   return (
     <div className="calendar-screen">
@@ -65,13 +70,21 @@ export const CalendarScreen = () => {
         endAccessor="end"
         messages={messages}
         onDoubleClickEvent={onDoubleClick}
+        selectable={true}
         onSelectEvent={onSelectEvent}
         onView={onViewChange}
         eventPropGetter={eventStyleGetter}
         components={{ event: CalendarEvent }}
+        onSelectSlot={onSelectSlot}
         view={lastView}
       />
       <AddNewFab action={() => dispatch(uiOpenModal())}/>
+
+      {
+        activeEvent &&
+        <DeleteEventFab action={() => dispatch(eventDeleted(activeEvent))}/>
+      }
+      
       <CalendarModal />
     </div>
   );
