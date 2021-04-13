@@ -13,7 +13,7 @@ import { AddNewFab } from "../ui/AddNewFab";
 import { DeleteEventFab } from "../ui/DeleteEventFab";
 
 import { uiOpenModal } from "../../actions/ui";
-import { eventSetActive, eventDeleted, eventClearActiveEvent, eventStartLoading } from "../../actions/events";
+import { eventSetActive, eventStartDelete, eventClearActiveEvent, eventStartLoading } from "../../actions/events";
 
 moment.locale("es");
 
@@ -87,7 +87,7 @@ export const CalendarScreen = () => {
 
       {
         activeEvent &&
-        <DeleteEventFab action={() => dispatch(eventDeleted(activeEvent))}/>
+        <DeleteEventFab action={() => dispatch(eventStartDelete())}/>
       }
       
       <CalendarModal />
