@@ -1,35 +1,49 @@
-import React, {useEffect} from "react";
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 
-import { startChecking } from '../actions/auth'
-import {LoginScreen} from "../components/auth/LoginScreen"
-import {CalendarScreen} from "../components/calendar/CalendarScreen"
+import { startChecking } from "../actions/auth";
+import { LoginScreen } from "../components/auth/LoginScreen";
+import { CalendarScreen } from "../components/calendar/CalendarScreen";
+import { PrivateRoute } from "../router/PrivateRoute";
+import { PublicRoute } from "../router/PublicRoute";
 
 export const AppRouter = () => {
-
   const dispatch = useDispatch();
+  const { checking, uid } = useSelector((state) => state.auth);
 
   useEffect(() => {
-   dispatch(startChecking());
+    dispatch(startChecking());
   }, [dispatch]);
 
-  return ( 
+  if (checking) {
+    return <h5>Espere...</h5>;
+  }
+
+  return (
     <Router>
       <div>
-       
         <Switch>
-          <Route exact path="/login" component={LoginScreen}/>
-          <Route exact path="/" component={CalendarScreen}/>
-          <Redirect to="/"/>
+          <PublicRoute
+            exact
+            path="/login"
+            component={LoginScreen}
+            isAuthenticated={!!uid}
+          />
+          <PrivateRoute
+            exact
+            path="/"
+            component={CalendarScreen}
+            isAuthenticated={!!uid}
+          />
+          <Redirect to="/" />
         </Switch>
       </div>
     </Router>
-   );
-}
- 
+  );
+};
