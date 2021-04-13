@@ -2,6 +2,15 @@ import React from 'react';
 import './login.css';
 
 export const LoginScreen = () => {
+    
+    const initialForm = {
+        name: '',
+        age: 0,
+        email: ''
+    };
+    
+    const [ formValues, handleInputChange, reset ] = useForm( initialForm );
+
     return (
         <div className="container login-container">
             <div className="row">
