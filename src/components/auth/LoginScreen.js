@@ -7,7 +7,7 @@ import "./login.css";
 export const LoginScreen = () => {
   const [formLoginValues, handleLoginInputChange, reset] = useForm({
     lEmail: "raquelv85@gmail.com",
-    lPassword: 123456,
+    lPassword: "123456",
   });
   const dispatch = useDispatch();
 
