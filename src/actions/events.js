@@ -16,7 +16,7 @@ export const eventStartAddNew = (event) => {
           _id: uid,
           name: name
         }
-        console.log(event)
+ 
         dispatch(eventAddNew(event))
       }
 
