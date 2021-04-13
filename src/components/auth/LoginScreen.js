@@ -2,7 +2,7 @@ import React from "react";
 import Swal from 'sweetalert2'
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "../../hooks/useForm";
-import { startLogin } from '../../actions/auth'
+import { startLogin, startRegister } from '../../actions/auth'
 import "./login.css";
 
 export const LoginScreen = () => {
@@ -34,7 +34,8 @@ export const LoginScreen = () => {
     if(rPassword1 !== rPassword2){
         return Swal.fire('Error', 'Las contraseñas deben de ser iguales');
     }
-    //dispatch(startLogin(lEmail, lPassword))
+    
+    dispatch(startRegister(rEmail, rPassword1, rName))
 }
 
   return (
