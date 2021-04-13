@@ -6,7 +6,7 @@ import moment from "moment";
 import Swal from "sweetalert2";
 import { uiCloseModal } from "../../actions/ui";
 import {
-  eventAddNew,
+  eventStartAddNew,
   eventClearActiveEvent,
   eventUpdated,
 } from "../../actions/events";
@@ -106,14 +106,7 @@ export const CalendarModal = () => {
       dispatch(eventUpdated(formValues));
     } else {
       dispatch(
-        eventAddNew({
-          ...formValues,
-          id: new Date().getTime(),
-          user: {
-            _id: "1234",
-            name: "Raquel",
-          },
-        })
+        eventStartAddNew(formValues)
       );
     }
 
