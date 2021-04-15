@@ -1,3 +1,3 @@
-# Getting Started with Create React App
+# Calendar App Mern
 
-Aplicación de un calendario dónde se pueden añadir / editar eventos, parte front hecha con react, hooks, redux thunk, test con jest
+Aplicación de un calendario dónde se pueden añadir / editar / eliminar eventos, parte front hecha con react, hooks, redux thunk y test con jest
