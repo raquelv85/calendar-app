@@ -5,6 +5,8 @@
   </a>
 </p>
 
+> calendar-app - Aplicación de un calendario dónde se pueden añadir / editar / eliminar eventos, parte backend hecha en Node y Mongo Express
+
 ### 🏠 [Homepage](https://mern-calendar-app-rv.herokuapp.com/)
 
 ### ✨ [Demo](https://mern-calendar-app-rv.herokuapp.com/)
